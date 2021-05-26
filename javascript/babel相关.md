@@ -3,8 +3,7 @@
 babel插件太多了，但是又不是经常需要配置这个，时间久了总是容易忘记啥插件干啥，记录一下。
 
 ### transform-runtime作用
-
-
+babel转义的时候，对新的api的处理方式是引入pollyfill， 但是pollyfill会有一些重复的helper函数和需要额外的导入一个`regenerator-runtime/runtime.js`依赖， transform-runtime可以自动导入这个包和合并一些重复的helper函数。我们可以手动验证一下
 
 首先在babel官网的[try it out](https://babeljs.io/repl)中写入一段es6代码，然后将目标设置为ie8以上，得到babelb的编译结果
 
@@ -25,7 +24,7 @@ if (arr.includes(2)) {}
 
 
 
-在侧栏preset的配置中选中buildins，然后设置为usages(和日常的`.babelrc`里的配置一样)，顺便加点新代码，可以看到新的输出。说明pollify生效了，但是会有几个问题。
+在侧栏preset的配置中选中buildins，然后设置为usages(和日常的`.babelrc`里的配置一样，只pollyfill用到的特性)，顺便加点新代码，可以看到新的输出。说明pollify生效了，但是会有几个问题。
 
 ![image-20210329100401529](images/image-20210329100401529.png)
 
@@ -36,7 +35,7 @@ if (arr.includes(2)) {}
 
 
 
-然后我们可以使用transform-runtime来解决上面三个问题。加入@babel/plugin-transform-runtime。得到新的结果。
+然后我们可以使用transform-runtime来解决上面两个问题。加入@babel/plugin-transform-runtime。得到新的结果。
 
 ![image-20210329100658203](images/image-20210329100658203.png)
 
